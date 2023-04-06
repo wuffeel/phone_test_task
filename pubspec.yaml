@@ -11,6 +11,12 @@ dependencies:
   flutter:
     sdk: flutter
 
+  modal_bottom_sheet:
+    git:
+      url: https://github.com/eli1stark/modal_bottom_sheet.git
+      ref: main
+      path: modal_bottom_sheet
+
   cupertino_icons: ^1.0.2
   flutter_svg: ^2.0.4
   mask_text_input_formatter: ^2.4.0
@@ -25,5 +31,7 @@ dev_dependencies:
 flutter:
   assets:
     - assets/arrow_right.svg
-    
+    - assets/cross_icon.svg
+    - assets/search_icon.svg
+
   uses-material-design: true
