@@ -12,6 +12,9 @@ dependencies:
     sdk: flutter
 
   cupertino_icons: ^1.0.2
+  flutter_svg: ^2.0.4
+  mask_text_input_formatter: ^2.4.0
+  google_fonts: ^4.0.3
 
 dev_dependencies:
   flutter_test:
@@ -20,5 +23,7 @@ dev_dependencies:
   flutter_lints: ^2.0.0
 
 flutter:
-
+  assets:
+    - assets/arrow_right.svg
+    
   uses-material-design: true
