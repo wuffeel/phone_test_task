@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:phone_test_task/styles/phone_task_text_styles.dart';
 
 class CountryCodeContainer extends StatelessWidget {
   final VoidCallback onPressed;
@@ -29,20 +30,14 @@ class CountryCodeContainer extends StatelessWidget {
           ),
           child: Row(
             children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.only(right: 3.0),
-                child: Text(
-                  countryFlag,
-                  style: GoogleFonts.inter(fontSize: 16),
-                ),
+              Text(
+                countryFlag,
+                style: GoogleFonts.inter(fontSize: 16),
               ),
+              const SizedBox(width: 3),
               Text(
                 countryCode,
-                style: GoogleFonts.inter(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500,
-                  color: const Color.fromRGBO(89, 76, 116, 1),
-                ),
+                style: PhoneTaskTextStyles.commonTextBlack,
               ),
             ],
           ),

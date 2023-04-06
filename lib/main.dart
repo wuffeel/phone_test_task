@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:phone_test_task/screens/main_page.dart';
+import 'package:phone_test_task/screens/main_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.deepPurple
       ),
-      home: const MainPage(),
+      home: const MainScreen(),
     );
   }
 }

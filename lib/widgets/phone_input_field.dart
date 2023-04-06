@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+import 'package:phone_test_task/styles/phone_task_text_styles.dart';
 
 class PhoneInputField extends StatefulWidget {
   final String mask;
@@ -45,16 +45,8 @@ class _PhoneInputFieldState extends State<PhoneInputField> {
         autofocus: true,
         decoration: InputDecoration(
           hintText: 'Your phone number',
-          hintStyle: GoogleFonts.inter(
-            fontSize: 16,
-            fontWeight: FontWeight.w500,
-            color: const Color.fromRGBO(120, 134, 184, 1),
-          ),
-          labelStyle: GoogleFonts.inter(
-            fontSize: 16,
-            fontWeight: FontWeight.w500,
-            color: const Color.fromRGBO(89, 76, 116, 1),
-          ),
+          hintStyle: PhoneTaskTextStyles.commonTextHint,
+          labelStyle: PhoneTaskTextStyles.commonTextBlack,
           border: InputBorder.none,
           contentPadding: const EdgeInsets.symmetric(
             horizontal: 12.0,
