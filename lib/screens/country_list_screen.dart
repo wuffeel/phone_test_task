@@ -107,7 +107,9 @@ class _CountryListScreenState extends State<CountryListScreen> {
                     itemBuilder: (context, index) {
                       final country = filteredCountries[index];
                       return CountryListTile(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.pop(context, country);
+                        },
                         countryFlag: country.flag!,
                         countryName: country.name!,
                         countryCallCode: country.countryCallCode!,

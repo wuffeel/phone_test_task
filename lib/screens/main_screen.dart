@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:phone_test_task/models/country.dart';
 import 'package:phone_test_task/screens/country_list_screen.dart';
 import 'package:phone_test_task/styles/phone_task_text_styles.dart';
 import 'package:phone_test_task/widgets/country_code_container.dart';
 import 'package:phone_test_task/widgets/phone_input_field.dart';
+
+import '../widgets/country_description_dialog.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
@@ -15,6 +18,7 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   bool _isFabEnabled = false;
+  Country? _selectedCountry;
 
   @override
   Widget build(BuildContext context) {
@@ -37,20 +41,23 @@ class _MainScreenState extends State<MainScreen> {
               child: Row(
                 children: <Widget>[
                   CountryCodeContainer(
-                    onPressed: () {
-                      showMaterialModalBottomSheet(
+                    onPressed: () async {
+                      final selectedCountry =
+                          await showMaterialModalBottomSheet(
                         enableDrag: false,
                         backgroundColor: Colors.transparent,
                         context: context,
                         builder: (context) => CountryListScreen(
-                          onCrossTap: () => Navigator.of(context).pop(),
+                          onCrossTap: () =>
+                              Navigator.pop(context, _selectedCountry),
                         ),
                       );
+                      setState(() {
+                        _selectedCountry = selectedCountry;
+                      });
                     },
-                    // TODO: use REST data and provide functionality to update
-                    // data based on chosen from bottom sheet
-                    countryFlag: '🇺🇸',
-                    countryCode: '+1',
+                    countryFlag: _selectedCountry?.flag ?? '🇺🇸',
+                    countryCode: _selectedCountry?.countryCallCode ?? '+1',
                   ),
                   const SizedBox(width: 8),
                   Expanded(
@@ -74,8 +81,20 @@ class _MainScreenState extends State<MainScreen> {
         opacity: _isFabEnabled ? 1.0 : 0.5,
         duration: const Duration(milliseconds: 300),
         child: FloatingActionButton(
-          // TODO: implement some test functionality
-          onPressed: _isFabEnabled ? () {} : null,
+          onPressed: _isFabEnabled
+              ? () {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return CountryDescriptionDialog(
+                        title: _selectedCountry?.name ?? 'United States',
+                        callCode: _selectedCountry?.countryCallCode ?? '+1',
+                        flag: _selectedCountry?.flag ?? '🇺🇸',
+                      );
+                    },
+                  );
+                }
+              : null,
           backgroundColor: Colors.white,
           elevation: 0,
           child: Container(
