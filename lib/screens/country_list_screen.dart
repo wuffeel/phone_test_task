@@ -20,6 +20,9 @@ class CountryListScreen extends StatefulWidget {
 }
 
 class _CountryListScreenState extends State<CountryListScreen> {
+  final _searchController = TextEditingController();
+  String _searchText = '';
+
   final _countryService = CountryService();
   late Future<List<Country>> _countriesFuture;
 
@@ -27,6 +30,17 @@ class _CountryListScreenState extends State<CountryListScreen> {
   void initState() {
     super.initState();
     _countriesFuture = _countryService.getCountries();
+    _searchController.addListener(() {
+      setState(() {
+        _searchText = _searchController.text;
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
   }
 
   @override
@@ -70,8 +84,9 @@ class _CountryListScreenState extends State<CountryListScreen> {
             ],
           ),
           const SizedBox(height: 20),
-          // TODO: implement search functionality
-          const SearchCountryField(),
+          SearchCountryField(
+            textController: _searchController,
+          ),
           Expanded(
             child: FutureBuilder<List<Country>>(
               future: _countriesFuture,
@@ -79,11 +94,16 @@ class _CountryListScreenState extends State<CountryListScreen> {
                 if (snapshot.hasData) {
                   final countries = snapshot.data!
                     ..sort((a, b) => a.name!.compareTo(b.name!));
+                  final filteredCountries = countries
+                      .where((country) => country.name!
+                          .toLowerCase()
+                          .contains(_searchText.toLowerCase()))
+                      .toList();
                   return ListView.builder(
                     padding: const EdgeInsets.only(top: 12.0),
-                    itemCount: countries.length,
+                    itemCount: filteredCountries.length,
                     itemBuilder: (context, index) {
-                      final country = countries[index];
+                      final country = filteredCountries[index];
                       return CountryListTile(
                         onPressed: () {},
                         countryFlag: country.flag!,
@@ -103,7 +123,7 @@ class _CountryListScreenState extends State<CountryListScreen> {
                 }
               },
             ),
-          )
+          ),
         ],
       ),
     );

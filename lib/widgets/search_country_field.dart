@@ -3,7 +3,9 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:phone_test_task/styles/phone_task_text_styles.dart';
 
 class SearchCountryField extends StatelessWidget {
-  const SearchCountryField({Key? key}) : super(key: key);
+  final TextEditingController textController;
+
+  const SearchCountryField({Key? key, required this.textController}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -14,6 +16,7 @@ class SearchCountryField extends StatelessWidget {
         color: const Color.fromRGBO(244, 245, 255, 0.4),
       ),
       child: TextField(
+        controller: textController,
         decoration: InputDecoration(
           hintText: 'Search',
           hintStyle: PhoneTaskTextStyles.commonTextBlack,
