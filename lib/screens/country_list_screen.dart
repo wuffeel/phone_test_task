@@ -95,9 +95,11 @@ class _CountryListScreenState extends State<CountryListScreen> {
                   final countries = snapshot.data!
                     ..sort((a, b) => a.name!.compareTo(b.name!));
                   final filteredCountries = countries
-                      .where((country) => country.name!
-                          .toLowerCase()
-                          .contains(_searchText.toLowerCase()))
+                      .where((country) =>
+                          country.name!
+                              .toLowerCase()
+                              .contains(_searchText.toLowerCase()) ||
+                          country.countryCallCode!.contains(_searchText))
                       .toList();
                   return ListView.builder(
                     padding: const EdgeInsets.only(top: 12.0),
