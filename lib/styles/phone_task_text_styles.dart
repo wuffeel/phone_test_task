@@ -8,6 +8,11 @@ class PhoneTaskTextStyles {
     color: Colors.white
   );
 
+  static TextStyle titleTextBlack = GoogleFonts.inter(
+      fontSize: 32,
+      fontWeight: FontWeight.w700,
+  );
+
   static TextStyle commonTextWhite = GoogleFonts.inter(
     fontSize: 16,
     fontWeight: FontWeight.w500,
