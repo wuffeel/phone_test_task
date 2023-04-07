@@ -4,15 +4,16 @@ import 'package:phone_test_task/styles/phone_task_text_styles.dart';
 import 'package:phone_test_task/widgets/country_list_tile.dart';
 
 import '../models/country.dart';
-import '../services/country_service.dart';
 import '../widgets/search_country_field.dart';
 
 class CountryListScreen extends StatefulWidget {
   final VoidCallback onCrossTap;
+  final Future<List<Country>> countriesFuture;
 
   const CountryListScreen({
     Key? key,
     required this.onCrossTap,
+    required this.countriesFuture,
   }) : super(key: key);
 
   @override
@@ -23,13 +24,9 @@ class _CountryListScreenState extends State<CountryListScreen> {
   final _searchController = TextEditingController();
   String _searchText = '';
 
-  final _countryService = CountryService();
-  late Future<List<Country>> _countriesFuture;
-
   @override
   void initState() {
     super.initState();
-    _countriesFuture = _countryService.getCountries();
     _searchController.addListener(() {
       setState(() {
         _searchText = _searchController.text;
@@ -89,7 +86,7 @@ class _CountryListScreenState extends State<CountryListScreen> {
           ),
           Expanded(
             child: FutureBuilder<List<Country>>(
-              future: _countriesFuture,
+              future: widget.countriesFuture,
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   final countries = snapshot.data!

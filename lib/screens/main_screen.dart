@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:http/http.dart' as http;
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:phone_test_task/models/country.dart';
 import 'package:phone_test_task/screens/country_list_screen.dart';
@@ -7,6 +10,7 @@ import 'package:phone_test_task/styles/phone_task_text_styles.dart';
 import 'package:phone_test_task/widgets/country_code_container.dart';
 import 'package:phone_test_task/widgets/phone_input_field.dart';
 
+import '../services/country_service.dart';
 import '../widgets/country_description_dialog.dart';
 
 class MainScreen extends StatefulWidget {
@@ -19,6 +23,34 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   bool _isFabEnabled = false;
   Country? _selectedCountry;
+  final _countryService = CountryService();
+  late Future<List<Country>> _countriesFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _countriesFuture = _countryService.getCountries()
+      ..then((countries) {
+        _setInitialCountry(countries);
+      });
+  }
+
+  void _setInitialCountry(List<Country> countries) async {
+    try {
+      final response = await http.get(Uri.parse('http://ip-api.com/json'));
+      final jsonResponse = json.decode(response.body);
+      final countryCode = jsonResponse['countryCode'];
+      setState(
+        () {
+          _selectedCountry = countries.firstWhere(
+            (country) => country.countryCode == countryCode,
+          );
+        },
+      );
+    } catch (e) {
+      print(e);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,16 +80,18 @@ class _MainScreenState extends State<MainScreen> {
                         backgroundColor: Colors.transparent,
                         context: context,
                         builder: (context) => CountryListScreen(
-                          onCrossTap: () =>
-                              Navigator.pop(context, _selectedCountry),
+                          onCrossTap: () {
+                            Navigator.pop(context, _selectedCountry);
+                          },
+                          countriesFuture: _countriesFuture,
                         ),
                       );
                       setState(() {
                         _selectedCountry = selectedCountry;
                       });
                     },
-                    countryFlag: _selectedCountry?.flag ?? '🇺🇸',
-                    countryCode: _selectedCountry?.countryCallCode ?? '+1',
+                    countryFlag: _selectedCountry?.flag ?? '',
+                    countryCode: _selectedCountry?.countryCallCode ?? '',
                   ),
                   const SizedBox(width: 8),
                   Expanded(
@@ -87,9 +121,9 @@ class _MainScreenState extends State<MainScreen> {
                     context: context,
                     builder: (BuildContext context) {
                       return CountryDescriptionDialog(
-                        title: _selectedCountry?.name ?? 'United States',
-                        callCode: _selectedCountry?.countryCallCode ?? '+1',
-                        flag: _selectedCountry?.flag ?? '🇺🇸',
+                        title: _selectedCountry?.name ?? '',
+                        callCode: _selectedCountry?.countryCallCode ?? '',
+                        flag: _selectedCountry?.flag ?? '',
                       );
                     },
                   );
