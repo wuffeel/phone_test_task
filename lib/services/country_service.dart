@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 
 class CountryService {
   static const String _baseUrl =
-      'https://restcountries.com/v3.1/all?fields=idd,name,flag';
+      'https://restcountries.com/v3.1/all?fields=idd,name,flag,cca2';
 
   Future<List<Country>> getCountries() async {
     final response = await http.get(Uri.parse(_baseUrl));
