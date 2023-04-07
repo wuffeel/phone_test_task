@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:phone_test_task/styles/phone_task_text_styles.dart';
 
+import '../styles/app_colors.dart';
+
 class PhoneInputField extends StatefulWidget {
   final String mask;
   final Map<String, RegExp> filter;
@@ -36,7 +38,7 @@ class _PhoneInputFieldState extends State<PhoneInputField> {
       height: 48,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(16),
-        color: const Color.fromRGBO(244, 245, 255, 0.4),
+        color: AppColors.containerBackgroundColor,
       ),
       child: TextField(
         onChanged: (_) {

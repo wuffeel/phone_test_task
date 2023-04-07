@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:phone_test_task/styles/phone_task_text_styles.dart';
 
+import '../styles/app_colors.dart';
+
 class CountryCodeContainer extends StatelessWidget {
   final VoidCallback onPressed;
   final String countryFlag;
@@ -21,8 +23,9 @@ class CountryCodeContainer extends StatelessWidget {
       child: Container(
         height: 48,
         decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(16),
-            color: const Color.fromRGBO(244, 245, 255, 0.4)),
+          borderRadius: BorderRadius.circular(16),
+          color: AppColors.containerBackgroundColor,
+        ),
         child: Padding(
           padding: const EdgeInsets.symmetric(
             horizontal: 12.0,

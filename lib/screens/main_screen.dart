@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:phone_test_task/models/country.dart';
 import 'package:phone_test_task/screens/country_list_screen.dart';
+import 'package:phone_test_task/styles/app_colors.dart';
 import 'package:phone_test_task/styles/phone_task_text_styles.dart';
 import 'package:phone_test_task/widgets/country_code_container.dart';
 import 'package:phone_test_task/widgets/phone_input_field.dart';
@@ -55,7 +56,7 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromRGBO(142, 170, 251, 1),
+      backgroundColor: AppColors.primaryBackgroundColor,
       body: Padding(
         padding: const EdgeInsets.only(
           top: 80.0,
@@ -72,27 +73,29 @@ class _MainScreenState extends State<MainScreen> {
             Center(
               child: Row(
                 children: <Widget>[
-                  CountryCodeContainer(
-                    onPressed: () async {
-                      final selectedCountry =
-                          await showMaterialModalBottomSheet(
-                        enableDrag: false,
-                        backgroundColor: Colors.transparent,
-                        context: context,
-                        builder: (context) => CountryListScreen(
-                          onCrossTap: () {
-                            Navigator.pop(context, _selectedCountry);
+                  _selectedCountry == null
+                      ? const CircularProgressIndicator()
+                      : CountryCodeContainer(
+                          onPressed: () async {
+                            final selectedCountry =
+                                await showMaterialModalBottomSheet(
+                              enableDrag: false,
+                              backgroundColor: Colors.transparent,
+                              context: context,
+                              builder: (context) => CountryListScreen(
+                                onCrossTap: () {
+                                  Navigator.pop(context, _selectedCountry);
+                                },
+                                countriesFuture: _countriesFuture,
+                              ),
+                            );
+                            setState(() {
+                              _selectedCountry = selectedCountry;
+                            });
                           },
-                          countriesFuture: _countriesFuture,
+                          countryFlag: _selectedCountry!.flag!,
+                          countryCode: _selectedCountry!.countryCallCode!,
                         ),
-                      );
-                      setState(() {
-                        _selectedCountry = selectedCountry;
-                      });
-                    },
-                    countryFlag: _selectedCountry?.flag ?? '',
-                    countryCode: _selectedCountry?.countryCallCode ?? '',
-                  ),
                   const SizedBox(width: 8),
                   Expanded(
                     child: PhoneInputField(

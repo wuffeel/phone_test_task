@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:phone_test_task/styles/phone_task_text_styles.dart';
 
+import '../styles/app_colors.dart';
+
 class SearchCountryField extends StatelessWidget {
   final TextEditingController textController;
 
@@ -13,7 +15,7 @@ class SearchCountryField extends StatelessWidget {
       height: 48,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(16),
-        color: const Color.fromRGBO(244, 245, 255, 0.4),
+        color: AppColors.containerBackgroundColor,
       ),
       child: TextField(
         controller: textController,

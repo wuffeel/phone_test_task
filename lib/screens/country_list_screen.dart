@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:phone_test_task/styles/app_colors.dart';
 import 'package:phone_test_task/styles/phone_task_text_styles.dart';
 import 'package:phone_test_task/widgets/country_list_tile.dart';
 
@@ -46,7 +47,7 @@ class _CountryListScreenState extends State<CountryListScreen> {
       height: MediaQuery.of(context).size.height * 0.95,
       padding: const EdgeInsets.only(left: 20.0, top: 20.0, right: 20.0),
       decoration: const BoxDecoration(
-        color: Color.fromRGBO(142, 170, 251, 1),
+        color: AppColors.primaryBackgroundColor,
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
       child: Column(
@@ -69,7 +70,7 @@ class _CountryListScreenState extends State<CountryListScreen> {
                   child: Container(
                     padding: const EdgeInsets.all(6.0),
                     decoration: BoxDecoration(
-                      color: const Color.fromRGBO(244, 245, 255, 0.4),
+                      color: AppColors.containerBackgroundColor,
                       borderRadius: BorderRadius.circular(6.0),
                     ),
                     child: SvgPicture.asset(
@@ -99,7 +100,7 @@ class _CountryListScreenState extends State<CountryListScreen> {
                           country.countryCallCode!.contains(_searchText))
                       .toList();
                   return ListView.builder(
-                    padding: const EdgeInsets.only(top: 12.0),
+                    padding: const EdgeInsets.symmetric(vertical: 12.0),
                     itemCount: filteredCountries.length,
                     itemBuilder: (context, index) {
                       final country = filteredCountries[index];
