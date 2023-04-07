@@ -3,15 +3,31 @@ import 'package:flutter_svg/svg.dart';
 import 'package:phone_test_task/styles/phone_task_text_styles.dart';
 import 'package:phone_test_task/widgets/country_list_tile.dart';
 
+import '../models/country.dart';
+import '../services/country_service.dart';
 import '../widgets/search_country_field.dart';
 
-class CountryListScreen extends StatelessWidget {
+class CountryListScreen extends StatefulWidget {
   final VoidCallback onCrossTap;
 
   const CountryListScreen({
     Key? key,
     required this.onCrossTap,
   }) : super(key: key);
+
+  @override
+  State<CountryListScreen> createState() => _CountryListScreenState();
+}
+
+class _CountryListScreenState extends State<CountryListScreen> {
+  final _countryService = CountryService();
+  late Future<List<Country>> _countriesFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _countriesFuture = _countryService.getCountries();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +52,7 @@ class CountryListScreen extends StatelessWidget {
                 ),
               ),
               GestureDetector(
-                onTap: onCrossTap,
+                onTap: widget.onCrossTap,
                 child: Align(
                   alignment: Alignment.topRight,
                   child: Container(
@@ -57,15 +73,35 @@ class CountryListScreen extends StatelessWidget {
           // TODO: implement search functionality
           const SearchCountryField(),
           Expanded(
-            child: ListView.builder(
-              padding: EdgeInsets.zero,
-              // TODO: provide itemCount and ListTile data from REST
-              itemCount: 5,
-              itemBuilder: (context, index) => const CountryListTile(
-                countryFlag: '🇺🇸',
-                countryCode: '+93',
-                countryName: 'USA',
-              ),
+            child: FutureBuilder<List<Country>>(
+              future: _countriesFuture,
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  final countries = snapshot.data!
+                    ..sort((a, b) => a.name!.compareTo(b.name!));
+                  return ListView.builder(
+                    padding: const EdgeInsets.only(top: 12.0),
+                    itemCount: countries.length,
+                    itemBuilder: (context, index) {
+                      final country = countries[index];
+                      return CountryListTile(
+                        onPressed: () {},
+                        countryFlag: country.flag!,
+                        countryName: country.name!,
+                        countryCallCode: country.countryCallCode!,
+                      );
+                    },
+                  );
+                } else if (snapshot.hasError) {
+                  return const Center(
+                    child: Text('An error occurred'),
+                  );
+                } else {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+              },
             ),
           )
         ],
